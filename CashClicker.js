@@ -360,10 +360,10 @@ afterInput(() =>{
     addText(`Money:  ${money}`, {x: 1, y:1, color: color`2`}) //Adds the money back (refreshes the variable)
   }
   else{
-    addText(`${autoClicksPerSec}`, {x: 6, y:4, color: color`0`})
-    addText(`${moneyPerClick}`, {x: 6, y:11, color: color`0`})
-    addText(`Cost: ${autoPrice}`, {x: 6, y:6, color: color`0`})
-    addText(`Cost: ${cpcPrice}`, {x: 6, y:12, color: color`0`})
+    addText(`${autoClicksPerSec}`, {x: 3, y:4, color: color`0`})
+    addText(`${moneyPerClick}`, {x: 3, y:11, color: color`0`})
+    addText(`Cost: ${autoPrice}`, {x: 3, y:6, color: color`0`})
+    addText(`Cost: ${cpcPrice}`, {x: 3, y:12, color: color`0`})
   }
 })
 
