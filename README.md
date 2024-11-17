@@ -1,5 +1,5 @@
 # Cash Clicker!
-This game is a port from a [Scratch game]([url](https://scratch.mit.edu/projects/515730164/)) I made a while back. I really enjoyed it and thought it would be perfect to play on the sprig  while you wait for something.
+This game is a port from a [Scratch game](https://scratch.mit.edu/projects/515730164/) I made a while back. I really enjoyed it and thought it would be perfect to play on the sprig  while you wait for something.
 I also had a lot of fun learning how to take something from block coding and convert it into JavaScript, a language I had never used before. (I've only used Python and Java before this).
 
 ## Goal
