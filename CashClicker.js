@@ -15,12 +15,13 @@ const coin1 = "0";
 const coin2 = "1";
 const coin3 = "2";
 const coin4 = "3";
-const coinRain = "4";
 const shopBtn1 = "5";
 const shopBtn2 = "6";
 const shopClsBtn = "7";
-const autoClicker = "8";
-const clicksPerClicks = "9"
+const autoClicker1 = "8";
+const clicksPerClicks1 = "9";
+const autoClicker2 = "a";
+const clicksPerClicks2 = "c";
 const background = "b";
 const shopBg = "s";
 
@@ -94,23 +95,6 @@ setLegend(
 5577557755775577
 5577557755775577
 5577557755775577`],
-  [ coinRain, bitmap`
-................
-................
-................
-................
-................
-................
-................
-.......66.......
-.......66.......
-................
-................
-................
-................
-................
-................
-................`], 
   [ shopBtn1, bitmap`
 6666666666666666
 6666666666666666
@@ -162,40 +146,74 @@ setLegend(
 6666666666666666
 6666666666666666
 6666666666666666`],
-  [ autoClicker, bitmap`
-4444444444444666
-4400044400004666
-4044404404444666
-4000004404444666
-4044404404444666
-4044404400004666
-4444444444444666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666`],
-  [ clicksPerClicks, bitmap`
-4444444444444666
-4000400040004666
-4044404040444666
-4044400040444666
-4044404440444666
-4000404440004666
-4444444444444666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666
-6666666666666666`],
+  [ autoClicker1, bitmap`
+4444444444444444
+4444444444444444
+4444440000444444
+4444404444044444
+4444404444044444
+4444044444404444
+4440444444440444
+4440444444440444
+4440000000000444
+4440444444440444
+4404444444444044
+4404444444444044
+4404444444444044
+4404444444444044
+4444444444444444
+4444444444444444`],
+  [ autoClicker2, bitmap`
+4444444444444444
+4444444444444444
+4440000000000044
+4440444444444444
+4440444444444444
+4440444444444444
+4440444444444444
+4440444444444444
+4440444444444444
+4440444444444444
+4440444444444444
+4440444444444444
+4440444444444444
+4440000000000044
+4444444444444444
+4444444444444444`],
+  [ clicksPerClicks1, bitmap`
+4444444444444444
+4000000444444400
+4000000444444400
+4004444444444400
+4004444444444400
+4004444444444400
+4004444444444400
+4004444444444400
+4004444444444400
+4004444444444400
+4004444444444400
+4004444444444400
+4000000444444400
+4000000444444400
+4444444444444444
+4444444444444444`],
+  [ clicksPerClicks2, bitmap`
+4444444444444444
+0000044440000004
+0000044440000004
+4440044440044444
+4440044440044444
+4440044440044444
+4440044440044444
+0000044440044444
+0000044440044444
+4444444440044444
+4444444440044444
+4444444440044444
+4444444440000004
+4444444440000004
+4444444444444444
+4444444444444444`],
   [ background, bitmap`
 5577557755775577
 5577557755775577
@@ -233,7 +251,7 @@ setLegend(
 );
 
 //Create levels
-const level = 0; //Current level (Menu in this case)
+let level = 0; //Current level (Menu in this case)
 const levels = [
     map`
 bbbbbbbbbb
@@ -247,10 +265,122 @@ bbbbbbbbbb`,
     map`
 bbbbbbbbbb
 bsssssss7b
-bsss88sssb
+bsss8asssb
 bssssssssb
 bssssssssb
-bsss99sssb
+bsss9csssb
 bssssssssb
 bbbbbbbbbb`
 ]
+
+//Set current level
+const currentLevel = levels[level];
+setMap(currentLevel);
+
+//Create vars
+let money = 0;
+let autoClicksPerSec = 0;
+let moneyPerClick = 1;
+let autoPrice = 100;
+let cpcPrice = 100;
+let apc = 5;
+let cpc = 2;
+let audio = true;
+
+//create music
+const clickSound = tune`
+128.75536480686696: A5-128.75536480686696,
+128.75536480686696: B5-128.75536480686696,
+3862.660944206009`;
+
+//Display vars
+addText(`Money:  ${money}`, {x: 1, y:1, color: color`2`})
+
+//Click the coin
+onInput("w", () =>{
+  money = money + moneyPerClick; //Add money
+  if(audio){
+    playTune(clickSound); //Plays a chime when you click the coin
+  }
+})
+
+//Toggle audio
+onInput("a", () =>{
+  if(audio){
+    audio = false;
+  }
+  else{
+    audio = true;
+  }
+})
+
+//Toggle the shop
+onInput("i", () =>{
+  if(level === 0 ){
+    setMap(levels[1]);
+    level = 1;
+  }
+  else{
+    setMap(levels[0]);
+    level = 0;
+  }
+})
+
+//Buy autoclicker
+onInput("j", ()=>{
+  if(level === 1){
+    if(money >= autoPrice){
+      money = money - autoPrice;
+      autoPrice = Number((autoPrice * 1.5).toFixed(0));
+      autoClicksPerSec = autoClicksPerSec + apc;
+      apc = Number((apc * 1.25).toFixed(0));
+    }
+  }
+})
+
+//Buy clicks per click
+onInput("l", ()=>{
+  if(level === 1){
+    if(money >= cpcPrice){
+      money = money - cpcPrice;
+      cpcPrice = Number((cpcPrice * 1.5).toFixed(0));
+      moneyPerClick = moneyPerClick + cpc;
+      cpc = Number((cpc * 1.25).toFixed(0));
+    }
+  }
+})
+
+//Runs after every input
+afterInput(() =>{
+  //Clear all text on screen
+  clearText();
+
+  //Check if you are in shop or not
+  if(level === 0){
+    addText(`Money:  ${money}`, {x: 1, y:1, color: color`2`}) //Adds the money back (refreshes the variable)
+  }
+  else{
+    addText(`${autoClicksPerSec}`, {x: 6, y:4, color: color`0`})
+    addText(`${moneyPerClick}`, {x: 6, y:11, color: color`0`})
+    addText(`Cost: ${autoPrice}`, {x: 6, y:6, color: color`0`})
+    addText(`Cost: ${cpcPrice}`, {x: 6, y:12, color: color`0`})
+  }
+})
+
+//Autoclicker
+function autoClick(){
+  money = money + autoClicksPerSec;
+  //Check if you are in shop or not
+  if(level === 0){
+    addText(`Money:  ${money}`, {x: 1, y:1, color: color`2`}) //Adds the money back (refreshes the variable)
+  }
+  else{
+    addText(`${autoClicksPerSec}`, {x: 3, y:4, color: color`0`})
+    addText(`${moneyPerClick}`, {x: 3, y:11, color: color`0`})
+    addText(`Cost: ${autoPrice}`, {x: 3, y:6, color: color`0`})
+    addText(`Cost: ${cpcPrice}`, {x: 3, y:12, color: color`0`})
+  }
+}
+
+//Call autoclicker every second
+setInterval(autoClick, 1000);
